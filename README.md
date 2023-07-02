@@ -1,5 +1,12 @@
 # PHP Nginx MariaDB scaffold
 
+### Start container
+
+```
+cd docker
+docker compose up
+```
+
 ### How to create new project
 
 ```
@@ -11,6 +18,18 @@ composer create-project laravel/laravel app
 ```
 cd app
 php artisan migrate
+```
+
+### Create user
+
+```
+php artisan tinker
+
+User::create([
+    'name' => 'admin',
+    'email' => 'admin@jayr.codes',
+    'password' => Hash::make('testtest'),
+]);
 ```
 
 ### Set mysql env
