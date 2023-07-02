@@ -1,0 +1,27 @@
+FROM php:8.2.6-fpm-alpine
+WORKDIR /var/www
+
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN apk add doas; \
+        adduser batman -D -G wheel; \
+        echo 'permit nopass :wheel as root' > /etc/doas.d/doas.conf
+
+USER batman   
+
+RUN doas apk update && \
+    doas apk add --no-cache \
+        zsh vim curl git
+
+# for zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+RUN echo 'alias a="php artisan"' >> ~/.zshrc
+RUN echo 'alias m="php artisan migrate"' >> ~/.zshrc
+RUN echo 'alias mr="php artisan migrate:rollback"' >> ~/.zshrc
+RUN echo 'alias test="php artisan test"' >> ~/.zshrc
+RUN echo 'alias tinker="php artisan tinker"' >> ~/.zshrc
+
+CMD ["php-fpm"]

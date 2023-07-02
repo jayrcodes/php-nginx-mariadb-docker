@@ -1,0 +1,53 @@
+version: '3'
+services:
+  php:
+    container_name: "mantine_php"
+    build:
+      context: .
+      dockerfile: Dockerfile-php
+    restart: unless-stopped
+    tty: true # keeps container alive on detached mode
+    volumes:
+      - "${PWD}/..:/var/www:cached"
+    depends_on:
+    - mysql
+    networks:
+      mantine_network:
+
+  nginx:
+    image: nginx:1.25.1-alpine3.17
+    container_name: mantine_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - "${PWD}/..:/var/www:cached"
+    depends_on:
+      - php
+    networks:
+      - mantine_network
+
+  mysql:
+    image: mariadb:11.0.2
+    container_name: mantine_mysql
+    restart: unless-stopped
+    volumes:
+    - mysql_data:/var/lib/mysql:delegated
+    environment:
+    - "MYSQL_ALLOW_EMPTY_PASSWORD=true"
+    - "MYSQL_DATABASE=acme"
+    - "MYSQL_USER=root"
+    - "MYSQL_PASSWORD=secret"
+    ports:
+    - "3306:3306"
+    mem_limit: 256m
+    networks:
+    - mantine_network
+  
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  mantine_network:
+    driver: bridge
