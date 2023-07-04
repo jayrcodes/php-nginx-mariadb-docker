@@ -14,14 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return \Inertia\Inertia::render('Home');
-});
-
 Route::get('/login', 'AuthController@loginPage')->name('login');
 Route::post('/login', 'AuthController@authenticate');
 Route::get('/logout', 'AuthController@logout');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/', function () {
+        return \Inertia\Inertia::render('Home');
+    });
     Route::get('/profile', 'AuthController@profile')->name('profile');
 });
