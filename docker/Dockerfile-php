@@ -6,17 +6,20 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN apk add doas; \
-        adduser batman -D -G wheel; \
-        echo 'permit nopass :wheel as root' > /etc/doas.d/doas.conf
+    adduser batman -D -G wheel; \
+    echo 'permit nopass :wheel as root' > /etc/doas.d/doas.conf
 
 USER batman   
 
 RUN doas apk update && \
     doas apk add --no-cache \
-        zsh vim curl git
+    zsh vim curl git
 
 # for zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
+    -t cypher
 
 RUN echo 'alias a="php artisan"' >> ~/.zshrc
 RUN echo 'alias m="php artisan migrate"' >> ~/.zshrc
