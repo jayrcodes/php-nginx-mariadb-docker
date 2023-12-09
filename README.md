@@ -2,4 +2,5 @@
 
 ### How to setup
 
-https://app.searchie.io/watch/R1q1LjzONP
+[![How to setup]()](https://app.searchie.io/watch/R1q1LjzONP)
+
