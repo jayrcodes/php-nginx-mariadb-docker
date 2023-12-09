@@ -1,51 +1,5 @@
 # PHP Nginx MariaDB scaffold
 
-### Start container
+### How to setup
 
-```
-cd docker
-docker compose up
-```
-
-### How to create new project
-
-```
-composer create-project laravel/laravel app
-```
-
-### Set mysql env
-
-```
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=acme
-DB_USERNAME=batman
-DB_PASSWORD=secret
-```
-
-
-### Migrate database
-
-```
-cd app
-php artisan migrate
-```
-
-### Create user
-
-```
-php artisan tinker
-
-User::create([
-    'name' => 'admin',
-    'email' => 'admin@jayr.codes',
-    'password' => Hash::make('testtest'),
-]);
-```
-
-### Access
-
-```
-http://localhost
-```
+https://app.searchie.io/watch/R1q1LjzONP
